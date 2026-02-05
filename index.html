@@ -101,7 +101,8 @@
             color: white; 
         }
 
-        .video-bg {
+        /* FOTO DE FUNDO HERO (Tratada via CSS) */
+        .hero-bg-img {
             position: absolute;
             top: 0;
             left: 0;
@@ -109,7 +110,13 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            filter: brightness(0.4); 
+            /* TRUQUE VISUAL:
+               brightness(0.35): Escurece bem a imagem para o texto brilhar.
+               contrast(1.1): Aumenta contraste para não ficar "lavado".
+               blur(2px): Leve desfoque para disfarçar baixa resolução e focar no texto. 
+            */
+            filter: brightness(0.35) contrast(1.1) blur(2px);
+            transform: scale(1.05); /* Zoom leve para evitar bordas brancas do blur */
         }
 
         .hero-content {
@@ -128,7 +135,7 @@
             margin-bottom: 0.2rem; 
             letter-spacing: 0.1em; 
             margin-right: -0.1em;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
 
         .outline-subtitle {
@@ -159,7 +166,7 @@
         /* --- 2. CASES (CARROUSSEL / SLIDER) --- */
         .cases {
             background-color: transparent; 
-            overflow: hidden; /* Importante para o slider não quebrar o layout */
+            overflow: hidden; 
         }
 
         .cases-header {
@@ -181,7 +188,6 @@
             font-weight: 600;
         }
 
-        /* ESTRUTURA DO SLIDER */
         .slider-wrapper {
             width: 100%;
             position: relative;
@@ -189,26 +195,24 @@
 
         .slider-track {
             display: flex;
-            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Movimento suave */
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             width: 100%;
         }
 
         .slide-item {
-            min-width: 100%; /* Cada slide ocupa 100% da largura do container */
-            padding: 0 10px; /* Pequeno respiro lateral se necessário */
+            min-width: 100%; 
+            padding: 0 10px;
             box-sizing: border-box;
         }
 
         .project-card {
             position: relative;
             width: 100%;
-            aspect-ratio: 16/8; /* Mais wide para ser "Cinema" */
+            aspect-ratio: 16/8; 
             overflow: hidden;
             cursor: pointer;
             background-color: #fff;
-            
-            /* CONFIGURAÇÃO DE BORDA E SOMBRA "PISANDO" */
-            border-radius: 40px; /* Bordas bem arredondadas (Minimalista) */
+            border-radius: 40px; 
             box-shadow: var(--card-shadow); 
             transition: transform 0.5s ease, box-shadow 0.5s ease;
         }
@@ -236,7 +240,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 60px; /* Padding maior para o card grande */
+            padding: 60px;
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             opacity: 1; 
             display: flex;
@@ -249,7 +253,7 @@
         .overlay h4 { 
             font-family: var(--font-display);
             text-transform: uppercase; 
-            font-size: 3rem; /* Título bem grande */
+            font-size: 3rem; 
             font-weight: 400; 
             margin-bottom: 10px;
             letter-spacing: -0.02em; 
@@ -264,7 +268,6 @@
             font-weight: 600;
         }
 
-        /* NAVEGAÇÃO DO SLIDER */
         .slider-nav {
             display: flex;
             gap: 15px;
@@ -554,7 +557,7 @@
             .exp-number { display: none; }
             .exp-content-title h3 { padding-right: 0; margin-bottom: 0.5rem; }
             
-            .project-card { aspect-ratio: 4/5; } /* Mais alto no mobile */
+            .project-card { aspect-ratio: 4/5; } 
             .overlay h4 { font-size: 2rem; }
         }
 
@@ -581,9 +584,8 @@
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <video class="video-bg" autoplay muted loop playsinline>
-            <source src="video.mp4" type="video/mp4">
-        </video>
+        <!-- HERO IMAGE COM EFEITO DARK -->
+        <img src="hero-bg.webp" alt="Cinematic Background" class="hero-bg-img">
 
         <div class="fade-in delay-1 hero-content">
             <h1>PERCSUS</h1>
@@ -604,7 +606,6 @@
                 <h3 class="section-title" style="margin-bottom: 0;">Cases Reais</h3>
             </div>
             
-            <!-- Botões de Navegação -->
             <div class="slider-nav">
                 <button class="nav-btn" id="prevBtn">
                     <i data-lucide="arrow-left"></i>
@@ -615,14 +616,13 @@
             </div>
         </div>
         
-        <!-- Slider Container -->
         <div class="slider-wrapper">
             <div class="slider-track">
                 
                 <!-- Case 1 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto1.jpg" alt="Automotivo Moto">
+                        <img src="case1.webp" alt="Automotivo Moto">
                         <div class="overlay">
                             <h4>Adrenaline Rush</h4>
                             <span>Automotive</span>
@@ -633,7 +633,7 @@
                 <!-- Case 2 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto2.jpg" alt="Lifestyle Striped">
+                        <img src="case2.webp" alt="Lifestyle Striped">
                         <div class="overlay">
                             <h4>Raw Moments</h4>
                             <span>Lifestyle</span>
@@ -644,7 +644,7 @@
                 <!-- Case 3 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto4.jpg" alt="Musician Bass">
+                        <img src="case3.webp" alt="Musician Bass">
                         <div class="overlay">
                             <h4>Sound & Vision</h4>
                             <span>Music Video</span>
@@ -655,7 +655,7 @@
                 <!-- Case 4 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto5.jpg" alt="Fashion Editorial">
+                        <img src="case4.webp" alt="Fashion Editorial">
                         <div class="overlay">
                             <h4>Urban Noir</h4>
                             <span>Fashion Film</span>
@@ -666,7 +666,7 @@
                 <!-- Case 5 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto6.jpg" alt="Corporate Tech">
+                        <img src="case5.webp" alt="Corporate Tech">
                         <div class="overlay">
                             <h4>Future Tech</h4>
                             <span>Corporate</span>
@@ -677,7 +677,7 @@
                 <!-- Case 6 -->
                 <div class="slide-item">
                     <div class="project-card">
-                        <img src="foto7.jpg" alt="Documentary Travel">
+                        <img src="case6.webp" alt="Documentary Travel">
                         <div class="overlay">
                             <h4>Lost Places</h4>
                             <span>Documentary</span>
@@ -695,7 +695,6 @@
         <h2 class="section-title">Captar a Experiência.<br>Agora.</h2>
 
         <div class="experience-container">
-            <!-- Barra 1 -->
             <div class="exp-item">
                 <div class="exp-number">01</div>
                 <div class="exp-content-title">
@@ -706,7 +705,6 @@
                 </div>
             </div>
 
-            <!-- Barra 2 -->
             <div class="exp-item">
                 <div class="exp-number">02</div>
                 <div class="exp-content-title">
@@ -717,7 +715,6 @@
                 </div>
             </div>
 
-            <!-- Barra 3 -->
             <div class="exp-item">
                 <div class="exp-number">03</div>
                 <div class="exp-content-title">
@@ -741,7 +738,7 @@
             <span class="signature">Guido & Team</span>
         </div>
         <div class="about-img-wrapper">
-            <img src="foto3.jpg" alt="Equipe Percsus" class="about-img">
+            <img src="about-team.webp" alt="Equipe Percsus" class="about-img">
         </div>
     </section>
 
