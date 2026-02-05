@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERCSUS | Cinematic Visuals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- 
+        FONTES: 
+        - Archivo Black: Títulos e Impacto.
+        - Inter: Textos técnicos.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* --- RESET & BASE (MODO LIGHT / PRATA SUAVE) --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-primary: #ffffff; 
+            --text-body: #333333;    
+            --text-secondary: #777777;
+            
+            /* SOMBRA DO "PISANDO" (FLOOR SHADOW) */
+            --card-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3); 
+            
+            /* SOMBRA PARA TEXTO BRANCO NO FUNDO BRANCO */
+            --white-text-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.2);
+
+            /* FONTES */
+            --font-display: 'Archivo Black', sans-serif; 
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            /* DEGRADÊ RADIAL SUAVE */
+            background: radial-gradient(circle at center, #ffffff 0%, #eaeaea 100%);
+            color: var(--text-body);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- UTILS & ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeIn 1s ease-out forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        section { padding: 8rem 5%; }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            font-weight: 400; 
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: #ffffff; 
+            text-shadow: var(--white-text-shadow); 
+        }
+
+        .section-subtitle {
+            font-family: var(--font-body); 
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+            font-weight: 700;
+        }
+
+        /* --- 1. HERO (TOPO) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+            overflow: hidden;
+            color: white; 
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.4); 
+        }
+
+        .hero-content {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 9vw, 8rem); 
+            font-weight: 400; 
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem; 
+            letter-spacing: 0.1em; 
+            margin-right: -0.1em;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+        }
+
+        .outline-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: transparent;
+            -webkit-text-stroke: 1.5px white; 
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            opacity: 0.9;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.6;
+            animation: fadeIn 2s infinite alternate;
+        }
+        .scroll-line { width: 1px; height: 50px; background: rgba(255,255,255,0.5); }
+
+        /* --- 2. CASES (CARROUSSEL / SLIDER) --- */
+        .cases {
+            background-color: transparent; 
+            overflow: hidden; /* Importante para o slider não quebrar o layout */
+        }
+
+        .cases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 1.5rem;
+        }
+        
+        .view-all-link {
+            border-bottom: 1px solid #111; 
+            padding-bottom: 3px; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            color: #111;
+            font-weight: 600;
+        }
+
+        /* ESTRUTURA DO SLIDER */
+        .slider-wrapper {
+            width: 100%;
+            position: relative;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Movimento suave */
+            width: 100%;
+        }
+
+        .slide-item {
+            min-width: 100%; /* Cada slide ocupa 100% da largura do container */
+            padding: 0 10px; /* Pequeno respiro lateral se necessário */
+            box-sizing: border-box;
+        }
+
+        .project-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/8; /* Mais wide para ser "Cinema" */
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #fff;
+            
+            /* CONFIGURAÇÃO DE BORDA E SOMBRA "PISANDO" */
+            border-radius: 40px; /* Bordas bem arredondadas (Minimalista) */
+            box-shadow: var(--card-shadow); 
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.01); 
+            box-shadow: 0 50px 90px -20px rgba(0, 0, 0, 0.45); 
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            filter: brightness(0.95);
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+            filter: brightness(1);
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 60px; /* Padding maior para o card grande */
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            opacity: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        .overlay h4 { 
+            font-family: var(--font-display);
+            text-transform: uppercase; 
+            font-size: 3rem; /* Título bem grande */
+            font-weight: 400; 
+            margin-bottom: 10px;
+            letter-spacing: -0.02em; 
+            color: white; 
+        }
+        .overlay span { 
+            font-family: var(--font-body);
+            font-size: 1rem; 
+            color: #ddd; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            font-weight: 600;
+        }
+
+        /* NAVEGAÇÃO DO SLIDER */
+        .slider-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid #111;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #111;
+            color: white;
+        }
+        
+        .nav-btn i { stroke-width: 1.5px; }
+        .nav-btn:hover i { stroke: white; }
+
+        /* --- 3. CAPTAR EXPERIÊNCIA (DARK BLOCK) --- */
+        .dark-section-block {
+            background-color: #050505; 
+            margin: 4rem 5%; 
+            padding: 6rem 5%;
+            border-radius: 40px;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1), 0 20px 60px rgba(0,0,0,0.5);
+            color: white;
+        }
+
+        .dark-section-block .section-title {
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2); 
+            margin-bottom: 4rem;
+        }
+
+        .dark-section-block .section-subtitle {
+            color: #888; 
+        }
+
+        .experience-container {
+            max-width: 100%;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255,255,255,0.1); 
+        }
+
+        .exp-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding: 3.5rem 1rem;
+            display: grid;
+            grid-template-columns: 100px 1fr 2fr;
+            align-items: flex-start;
+            transition: 0.3s;
+            cursor: default;
+            border-radius: 20px;
+        }
+
+        .exp-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 2rem;
+        }
+
+        .exp-number {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #444; 
+            padding-top: 5px;
+            transition: 0.3s;
+        }
+
+        .exp-content-title h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            padding-right: 20px;
+            color: #fff; 
+        }
+
+        .exp-content-desc p {
+            color: #aaa; 
+            font-size: 1.1rem;
+            max-width: 500px;
+            font-weight: 400;
+        }
+        
+        .exp-item:hover .exp-number { 
+            color: #fff; 
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* --- 4. SOBRE NÓS --- */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .about-img-wrapper {
+            position: relative;
+            height: 650px;
+            width: 100%;
+            border-radius: 30px; 
+            overflow: hidden;
+            box-shadow: var(--card-shadow); 
+        }
+
+        .about-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.6s;
+        }
+        
+        .about-img-wrapper:hover .about-img { filter: grayscale(0%); }
+
+        .about-text h2 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            font-weight: 400;
+            color: #ffffff;
+            text-shadow: var(--white-text-shadow);
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            text-align: left;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        .signature {
+            font-family: var(--font-display); 
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 1;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 3rem;
+            display: inline-block;
+            border-bottom: 1px solid #111;
+            padding-bottom: 5px;
+            color: #111;
+        }
+
+        /* --- 5. PORQUE NÓS? --- */
+        .why-us {
+            text-align: center;
+            background-color: transparent; 
+            padding: 10rem 5%;
+        }
+
+        .why-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .why-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            line-height: 1.1;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            text-shadow: var(--white-text-shadow);
+        }
+
+        .highlight-text {
+            font-size: 1.4rem;
+            color: #666; 
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        .highlight-text strong { color: #000; font-weight: 700; }
+
+        .why-icons {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            margin-top: 5rem;
+            flex-wrap: wrap;
+        }
+
+        .w-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .w-item i { width: 32px; height: 32px; stroke: #111; stroke-width: 1.5px; } 
+        .w-item span { 
+            font-family: var(--font-display);
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            letter-spacing: 2px; 
+            font-weight: 400;
+            color: #444;
+        }
+
+        /* --- 6. CONTATO --- */
+        .contact-block {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5%; 
+        }
+
+        .whatsapp-btn {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            text-transform: uppercase;
+            padding: 1.5rem 4rem;
+            border-radius: 50px; 
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3); 
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255,255,255,0.6);
+            color: #000;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 2rem;
+            opacity: 0.6;
+            margin-top: 2rem;
+        }
+
+        .contact-info a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+        
+        .contact-info a:hover { opacity: 1; text-decoration: underline; }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            font-size: 0.75rem;
+            color: #666;
+            border-top: none; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-color: transparent;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .exp-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .exp-number { display: none; }
+            .exp-content-title h3 { padding-right: 0; margin-bottom: 0.5rem; }
+            
+            .project-card { aspect-ratio: 4/5; } /* Mais alto no mobile */
+            .overlay h4 { font-size: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .about { grid-template-columns: 1fr; gap: 3rem; }
+            .about-img-wrapper { height: 400px; order: -1; }
+            
+            .dark-section-block, .experience {
+                margin: 4rem 2%;
+                padding: 4rem 1.5rem;
+            }
+            
+            .whatsapp-btn {
+                padding: 1.2rem 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .contact-info { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="video.mp4" type="video/mp4">
+        </video>
+
+        <div class="fade-in delay-1 hero-content">
+            <h1>PERCSUS</h1>
+            <h2 class="outline-subtitle">A ARTE DE VENDER DESEJOS.</h2>
+        </div>
+        
+        <div class="scroll-indicator fade-in delay-3">
+            <span style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #fff;">Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- 2. CASES (CARROUSSEL) -->
+    <section id="cases" class="cases">
+        <div class="cases-header">
+            <div>
+                <span class="section-subtitle">Nosso Trabalho</span>
+                <h3 class="section-title" style="margin-bottom: 0;">Cases Reais</h3>
+            </div>
+            
+            <!-- Botões de Navegação -->
+            <div class="slider-nav">
+                <button class="nav-btn" id="prevBtn">
+                    <i data-lucide="arrow-left"></i>
+                </button>
+                <button class="nav-btn" id="nextBtn">
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Slider Container -->
+        <div class="slider-wrapper">
+            <div class="slider-track">
+                
+                <!-- Case 1 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto1.jpg" alt="Automotivo Moto">
+                        <div class="overlay">
+                            <h4>Adrenaline Rush</h4>
+                            <span>Automotive</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto2.jpg" alt="Lifestyle Striped">
+                        <div class="overlay">
+                            <h4>Raw Moments</h4>
+                            <span>Lifestyle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto4.jpg" alt="Musician Bass">
+                        <div class="overlay">
+                            <h4>Sound & Vision</h4>
+                            <span>Music Video</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 4 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto5.jpg" alt="Fashion Editorial">
+                        <div class="overlay">
+                            <h4>Urban Noir</h4>
+                            <span>Fashion Film</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 5 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto6.jpg" alt="Corporate Tech">
+                        <div class="overlay">
+                            <h4>Future Tech</h4>
+                            <span>Corporate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 6 -->
+                <div class="slide-item">
+                    <div class="project-card">
+                        <img src="foto7.jpg" alt="Documentary Travel">
+                        <div class="overlay">
+                            <h4>Lost Places</h4>
+                            <span>Documentary</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. CAPTAR EXPERIÊNCIA (DARK BLOCK) -->
+    <section id="experience" class="dark-section-block experience">
+        <span class="section-subtitle">Metodologia</span>
+        <h2 class="section-title">Captar a Experiência.<br>Agora.</h2>
+
+        <div class="experience-container">
+            <!-- Barra 1 -->
+            <div class="exp-item">
+                <div class="exp-number">01</div>
+                <div class="exp-content-title">
+                    <h3>Visão Estratégica</h3>
+                </div>
+                <div class="exp-content-desc">
+                    <p>Entendemos o core do seu negócio antes de ligar a câmera. O roteiro nasce do objetivo de venda, não apenas da estética.</p>
+                </div>
+            </div>
+
+            <!-- Barra 2 -->
+            <div class="exp-item">
+                <div class="exp-number">02</div>
+                <div class="exp-content-title">
+                    <h3>Produção High-End</h3>
+                </div>
+                <div class="exp-content-desc">
+                    <p>Equipamento de cinema e direção de arte meticulosa para criar uma estética que o mercado não pode ignorar.</p>
+                </div>
+            </div>
+
+            <!-- Barra 3 -->
+            <div class="exp-item">
+                <div class="exp-number">03</div>
+                <div class="exp-content-title">
+                    <h3>Pós-Produção</h3>
+                </div>
+                <div class="exp-content-desc">
+                    <p>Color grading e sound design que transformam imagens bonitas em narrativas viscerais e envolventes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SOBRE NÓS -->
+    <section id="about" class="about">
+        <div class="about-text">
+            <span class="section-subtitle">Quem Somos</span>
+            <h2>Sobre Nós</h2>
+            <p>A PERCSUS nasceu da necessidade de quebrar o padrão monótono do mercado audiovisual. Não somos apenas videomakers; somos arquitetos de percepção.</p>
+            <p>Acreditamos que cada marca possui uma alma cinematográfica esperando para ser revelada. Nossa missão é extrair essa essência e apresentá-la ao mundo com o impacto que ela merece.</p>
+            
+            <span class="signature">Guido & Team</span>
+        </div>
+        <div class="about-img-wrapper">
+            <img src="foto3.jpg" alt="Equipe Percsus" class="about-img">
+        </div>
+    </section>
+
+    <!-- 5. PORQUE NÓS? -->
+    <section class="why-us">
+        <div class="why-content">
+            <span class="section-subtitle">Diferencial</span>
+            <h2>Porque Nós?</h2>
+            <p class="highlight-text">
+                Enquanto o mercado foca em "entregar vídeos", nós focamos em <strong>elevar o valuation da sua marca</strong> através da estética. A beleza vende, e a narrativa convence. Nós unimos os dois.
+            </p>
+
+            <div class="why-icons">
+                <div class="w-item">
+                    <i data-lucide="camera"></i>
+                    <span>Cinema Gear</span>
+                </div>
+                <div class="w-item">
+                    <i data-lucide="zap"></i>
+                    <span>Agilidade</span>
+                </div>
+                <div class="w-item">
+                    <i data-lucide="globe"></i>
+                    <span>Worldwide</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. CONTATO (DARK BLOCK) -->
+    <section id="contact" class="dark-section-block contact-block">
+        <span class="section-subtitle">Próximo Nível</span>
+        <h2 class="section-title" style="margin-bottom: 1rem;">Sua Marca.<br>Nosso Cinema.</h2>
+        <p style="color: #aaa; max-width: 600px; margin-bottom: 2rem; font-size: 1.1rem;">
+            Não estamos procurando mais um cliente. Estamos procurando marcas prontas para dominar o mercado visualmente.
+        </p>
+        
+        <a href="https://wa.me/seunumerodewhatsapp" class="whatsapp-btn">
+            <i data-lucide="message-circle" style="width: 24px; height: 24px; stroke: black;"></i>
+            Iniciar Projeto
+        </a>
+        
+        <div class="contact-info">
+            <a href="mailto:official@percsus.com">official@percsus.com</a>
+            <span>|</span>
+            <a href="https://www.instagram.com/percsus/" target="_blank">Instagram</a>
+            <span>|</span>
+            <a href="#">LinkedIn</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>PERCSUS © 2026. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Script para ícones e Slider -->
+    <script>
+        lucide.createIcons();
+
+        // Lógica do Slider
+        const track = document.querySelector('.slider-track');
+        const slides = Array.from(document.querySelectorAll('.slide-item'));
+        const nextButton = document.querySelector('#nextBtn');
+        const prevButton = document.querySelector('#prevBtn');
+        
+        let currentIndex = 0;
+
+        const updateSlidePosition = () => {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + 'px)';
+        };
+
+        // Atualizar no resize para não quebrar
+        window.addEventListener('resize', updateSlidePosition);
+
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop infinito
+            }
+            updateSlidePosition();
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = slides.length - 1; // Loop infinito reverso
+            }
+            updateSlidePosition();
+        });
+    </script>
+
+</body>
+</html>
